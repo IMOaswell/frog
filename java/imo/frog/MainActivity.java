@@ -96,7 +96,7 @@ public class MainActivity extends Activity
                     boolean swipeDown = distance > NO_SWIPE_RANGE;
                     
                     if (MotionEvent.ACTION_MOVE == action) {
-                        int scrollFactor = (int) distance / 100;
+                        int scrollFactor = (int) distance / 50;
                         scrollFactor = Math.abs(scrollFactor);
                         if (swipeUp) {
                             startLine = startLine + scrollFactor;
@@ -107,7 +107,7 @@ public class MainActivity extends Activity
                             startLine = startLine - scrollFactor;
                             endLine = endLine - scrollFactor;
                         }
-                        mContext.setTitle("d: "+distance+"f: "+scrollFactor+"\ts: "+startLine+"\te: "+endLine);
+                        mContext.setTitle("d: "+distance+"\tf: "+scrollFactor+"\ts: "+startLine+"\te: "+endLine);
                     }
                     if (MotionEvent.ACTION_UP == action){
                         if (swipeUp || swipeDown) return true;
