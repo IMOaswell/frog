@@ -7,6 +7,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class MainActivity extends Activity
@@ -66,7 +67,7 @@ public class MainActivity extends Activity
 			editText.setTextSize(textSize);
 			textviewBelow.setTextSize(textSize);
 
-			positionEditText(0);
+			positionEditText(15);
 
 			codeLayout.addView(textviewAbove);
 			codeLayout.addView(editText);
@@ -95,12 +96,18 @@ public class MainActivity extends Activity
                     boolean swipeDown = distance > NO_SWIPE_RANGE;
                     
                     if (MotionEvent.ACTION_MOVE == action) {
+                        int scrollFactor = (int) distance / 100;
+                        scrollFactor = Math.abs(scrollFactor);
                         if (swipeUp) {
-                            mContext.setTitle("swiping up");
+                            startLine = startLine + scrollFactor;
+                            endLine = endLine + scrollFactor;
+                            
                         } else
                         if (swipeDown) {
-                            mContext.setTitle("swiping down");
+                            startLine = startLine - scrollFactor;
+                            endLine = endLine - scrollFactor;
                         }
+                        mContext.setTitle("d: "+distance+"f: "+scrollFactor+"\ts: "+startLine+"\te: "+endLine);
                     }
                     if (MotionEvent.ACTION_UP == action){
                         if (swipeUp || swipeDown) return true;
@@ -131,9 +138,9 @@ public class MainActivity extends Activity
 			for (int i = position + 1; i < endLine; i++) {
 				textBelow.append(content[i]).append("\n");
 			}
-			textviewAbove.setLayoutParams(new ViewGroup.LayoutParams(parentWidth, editTextHeight * (position)));
-			editText.setLayoutParams(new ViewGroup.LayoutParams(parentWidth, editTextHeight));
-			textviewBelow.setLayoutParams(new ViewGroup.LayoutParams(parentWidth, editTextHeight * (MAX_LINES - position)));
+			textviewAbove.setLayoutParams(new LinearLayout.LayoutParams(parentWidth, editTextHeight * (position)));
+			editText.setLayoutParams(new LinearLayout.LayoutParams(parentWidth, editTextHeight));
+			textviewBelow.setLayoutParams(new LinearLayout.LayoutParams(parentWidth, editTextHeight * (MAX_LINES - position)));
 
 			textviewAbove.setText(textAbove.toString());
 			editText.setText(content[position]);
