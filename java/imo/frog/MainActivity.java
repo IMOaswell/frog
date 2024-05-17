@@ -1,7 +1,6 @@
 package imo.frog;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
@@ -12,7 +11,7 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity
 {
-	static Context mContext;
+	static Activity mContext;
 	static final int MAX_LINES = 30;
 
 	@Override
@@ -78,17 +77,44 @@ public class MainActivity extends Activity
 
         static View.OnTouchListener touchLogic () {
             return new View.OnTouchListener(){
+                float initialY = 0;
+                final float NO_SWIPE_RANGE = 15;
+                View view;
+
                 @Override
-                public boolean onTouch (View view, MotionEvent event) {
-                    int action = event.getAction();
-                    if (action == MotionEvent.ACTION_DOWN) {
-                        //down
-                    } else if (action == MotionEvent.ACTION_UP) {
-                        //up
-                    } else if (action == MotionEvent.ACTION_MOVE) {
-                        //move
+                public boolean onTouch (View v, MotionEvent motion) {
+                    int action = motion.getAction();
+                    if (MotionEvent.ACTION_DOWN == action) {
+                        initialY = motion.getY();
+                        view = v;
+                        return true;
+                    }
+                    float finalY = motion.getY();
+                    float distance = finalY - initialY;
+                    boolean swipeUp = distance < -NO_SWIPE_RANGE;
+                    boolean swipeDown = distance > NO_SWIPE_RANGE;
+                    
+                    if (MotionEvent.ACTION_MOVE == action) {
+                        if (swipeUp) {
+                            mContext.setTitle("swiping up");
+                        } else
+                        if (swipeDown) {
+                            mContext.setTitle("swiping down");
+                        }
+                    }
+                    if (MotionEvent.ACTION_UP == action){
+                        if (swipeUp || swipeDown) return true;
+                        onClick(finalY);
                     }
                     return true;
+                }
+
+                void onClick (float y) {
+                    float sectionHeight = view.getHeight() / MAX_LINES;
+                    int touchedSection = (int) (y / sectionHeight);
+                    boolean lastSection = touchedSection == MAX_LINES;
+                    if (lastSection) return;
+                    mContext.setTitle(touchedSection + "");
                 }
             };
         }
