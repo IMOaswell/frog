@@ -1,6 +1,8 @@
-# Devlog:D
+# Stats
+**compiled to apk:** 1 times!
 
-|   Day |                                                                       fb post                                                                        |
+# Devlog:D
+|   Day |                                                                       link                                                                        |
 | ----- | :-------------------------------------------------------------------------------------------------------------------------------------------------: |
 | 01    |                                                             [view](https://www.facebook.com/100083333136200/posts/426182363502865/?mibextid=rS40aB7S9Ucbxw6v)                                                             |
 | 02    |                                                             [view](https://www.facebook.com/100083333136200/posts/426675843453517/?mibextid=rS40aB7S9Ucbxw6v)                                                             |

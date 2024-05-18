@@ -35,8 +35,8 @@ public class MainActivity extends Activity
 		static int parentWidth;
 		static int linesHeight;
 
-        static int startLine = 0;
-        static int endLine = MAX_LINES - 1;
+        static float startLine = 0;
+        static float endLine = MAX_LINES - 1;
 
 
         static void loadWithDelay (final ViewGroup codeLayout, int millis) {
@@ -89,30 +89,34 @@ public class MainActivity extends Activity
                         view = v;
                         return true;
                     }
-                    float finalY = motion.getY();
-                    float distance = finalY - initialY;
-                    boolean swipeUp = distance < -NO_SWIPE_RANGE;
-                    boolean swipeDown = distance > NO_SWIPE_RANGE;
-
-                    if (MotionEvent.ACTION_UP == action) {
-                        if (!swipeUp && !swipeDown) {
-                            onClick(finalY);
-                            return true;
-                        } 
-
+                    
+                    float currentY = motion.getY();
+                    
+                    if (MotionEvent.ACTION_MOVE == action) {
+                        float previousY = initialY;
+                        
+                        boolean swipeUp = currentY < previousY;
+                        boolean swipeDown = currentY > previousY;
+                        float scrollFactor = 0.7f;
                         if (swipeUp) {
                             if (endLine >= content.length - 1) return true;
-                            startLine++;
-                            endLine++;  
+                            startLine += scrollFactor;
+                            endLine += scrollFactor;
                         }
                         if (swipeDown) {
                             if (startLine <= 0) return true;
-                            startLine--;
-                            endLine--; 
+                            startLine -= scrollFactor;
+                            endLine -= scrollFactor; 
                         }
                         mContext.setTitle("start: " + startLine + "\tend: " + endLine);
                         positionEditText(15);
-
+                    }
+                    if (MotionEvent.ACTION_UP == action) {
+                        float distance = currentY - initialY;
+                        if (distance < -NO_SWIPE_RANGE || 
+                            distance > NO_SWIPE_RANGE)
+                            return true;
+                        onClick(currentY);
                     }
                     return true;
                 }
@@ -127,16 +131,18 @@ public class MainActivity extends Activity
         }
 
         static void setTexts (int editTextPosition) {
-            int editTextLine = startLine + editTextPosition;
+            int startLineInt = (int) startLine;
+            int editTextLine = startLineInt + editTextPosition;
             StringBuilder stringAbove = new StringBuilder();
             StringBuilder stringBelow = new StringBuilder();
             String stringEditText = "";
 
             for (int i = 0; i < MAX_LINES; i++) {
-                int currentLine = startLine + i;
-                if (currentLine < editTextLine) stringAbove.append(content[currentLine] + "\n");
-                if (currentLine == editTextLine) stringEditText = content[currentLine];
-                if (currentLine > editTextLine) stringBelow.append(content[currentLine] + "\n");
+                int currentLine = startLineInt + i;
+                String currentString = content[currentLine];
+                if (currentLine < editTextLine) stringAbove.append(currentString + "\n");
+                if (currentLine == editTextLine) stringEditText = currentString;
+                if (currentLine > editTextLine) stringBelow.append(currentString + "\n");
             }
             textviewAbove.setText(stringAbove.toString());
             textviewBelow.setText(stringBelow.toString());
