@@ -13,7 +13,7 @@ import android.widget.TextView;
 public class MainActivity extends Activity
 {
 	static Activity mContext;
-	static final int MAX_LINES = 30;
+	static final int MAX_LINES = 35;
 
 	@Override
 	protected void onCreate (Bundle savedInstanceState) {
@@ -37,6 +37,7 @@ public class MainActivity extends Activity
 
         static float startLine = 0;
         static float endLine = MAX_LINES - 1;
+        static int currentEditTextLine = 0;
 
 
         static void loadWithDelay (final ViewGroup codeLayout, int millis) {
@@ -61,13 +62,12 @@ public class MainActivity extends Activity
 			textviewBelow = new TextView(mContext);
 
 			textviewAbove.setTextSize(textSize);
-			editText.setBackgroundColor(0x8061AFEF);
+			editText.setBackgroundColor(0x7061AFEF);
 			editText.setPadding(0, 0, 0, 0);
-			editText.setSingleLine(true);
 			editText.setTextSize(textSize);
 			textviewBelow.setTextSize(textSize);
-
-			positionEditText(15);
+            
+            positionEditText(15);
 
 			codeLayout.addView(textviewAbove);
 			codeLayout.addView(editText);
@@ -78,44 +78,47 @@ public class MainActivity extends Activity
         static View.OnTouchListener touchLogic () {
             return new View.OnTouchListener(){
                 float initialY = 0;
-                final float NO_SWIPE_RANGE = 15;
-                View view;
+                float previousY = initialY;
+                final int NO_SWIPE_RANGE = 15;
+                final int SCROLL_STRENGTH = 1;
 
                 @Override
                 public boolean onTouch (View v, MotionEvent motion) {
                     int action = motion.getAction();
                     if (MotionEvent.ACTION_DOWN == action) {
                         initialY = motion.getY();
-                        view = v;
+                        previousY = initialY;
                         return true;
                     }
-                    
+
                     float currentY = motion.getY();
-                    
+                    float distToInitialY = currentY - initialY;
+                    boolean canSwipe = 
+                        distToInitialY < -NO_SWIPE_RANGE || 
+                        distToInitialY > NO_SWIPE_RANGE;
+
                     if (MotionEvent.ACTION_MOVE == action) {
-                        float previousY = initialY;
-                        
+                        if (!canSwipe) return true;
                         boolean swipeUp = currentY < previousY;
                         boolean swipeDown = currentY > previousY;
-                        float scrollFactor = 0.7f;
+                        previousY = currentY;
                         if (swipeUp) {
                             if (endLine >= content.length - 1) return true;
-                            startLine += scrollFactor;
-                            endLine += scrollFactor;
+                            startLine++;
+                            endLine++;
+                            previousY -= SCROLL_STRENGTH;
                         }
                         if (swipeDown) {
                             if (startLine <= 0) return true;
-                            startLine -= scrollFactor;
-                            endLine -= scrollFactor; 
+                            startLine--;
+                            endLine--;
+                            previousY += SCROLL_STRENGTH;
                         }
-                        mContext.setTitle("start: " + startLine + "\tend: " + endLine);
-                        positionEditText(15);
+                        mContext.setTitle("init: " + (int)initialY + "\tcurrent: " + (int)currentY + "\tprev: " + (int)previousY);
+                        positionEditText(currentEditTextLine);
                     }
                     if (MotionEvent.ACTION_UP == action) {
-                        float distance = currentY - initialY;
-                        if (distance < -NO_SWIPE_RANGE || 
-                            distance > NO_SWIPE_RANGE)
-                            return true;
+                        if (canSwipe) return true;
                         onClick(currentY);
                     }
                     return true;
@@ -126,6 +129,7 @@ public class MainActivity extends Activity
                     boolean lastSection = touchedSection == MAX_LINES;
                     if (lastSection) return;
                     mContext.setTitle(touchedSection + "");
+                    positionEditText(touchedSection);
                 }
             };
         }
@@ -159,9 +163,16 @@ public class MainActivity extends Activity
 			textviewAbove.invalidate();
 			editText.invalidate();
 			textviewBelow.invalidate();
+            currentEditTextLine = position;
 		}
 
 		static String generateContent () {
+            String crazy = mContext.getResources().getString(R.string.crazy);
+            for (int i = 0; i <= 100; i++) {
+                crazy += mContext.getResources().getString(R.string.crazy);
+			}
+            if (true) return crazy;
+
 			StringBuilder sb = new StringBuilder();
 			for (int i = 0; i <= 60; i++) {
 				sb.append(i).append("\n");

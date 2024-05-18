@@ -1,5 +1,5 @@
 # Stats
-**compiled to apk:** 12 times!
+**compiled to apk:** 40 times!
 
 # Devlog:D
 |   Day |                                                                       link                                                                        |
@@ -10,3 +10,4 @@
 | 04    |                                                             [view](https://www.facebook.com/100083333136200/posts/428840313237070/?mibextid=rS40aB7S9Ucbxw6v)                                                             |
 | 05    |                                                             [view](https://www.facebook.com/100083333136200/posts/433400102781091/?mibextid=rS40aB7S9Ucbxw6v)                                                             |
 | 06    |                                                             [view](https://www.facebook.com/100083333136200/posts/435417895912645/?mibextid=rS40aB7S9Ucbxw6v)                                                             |
+| 07    |                                                             [view](https://www.facebook.com/100083333136200/posts/436149159172852/?mibextid=rS40aB7S9Ucbxw6v)                                                             |
