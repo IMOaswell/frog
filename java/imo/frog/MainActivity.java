@@ -167,11 +167,13 @@ public class MainActivity extends Activity
 		}
 
 		static String generateContent () {
-            String crazy = mContext.getResources().getString(R.string.crazy);
+            String s = "";
             for (int i = 0; i <= 100; i++) {
-                crazy += mContext.getResources().getString(R.string.crazy);
+                s += mContext.getResources().getString(R.string.crazy);
+                s += mContext.getResources().getString(R.string.gyattstacy);
+                s += mContext.getResources().getString(R.string.last_rizzmas);
 			}
-            if (true) return crazy;
+            if (true) return s;
 
 			StringBuilder sb = new StringBuilder();
 			for (int i = 0; i <= 60; i++) {
