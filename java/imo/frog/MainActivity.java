@@ -12,28 +12,28 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity
 {
-	static Activity mContext;
-	
-	@Override
-	protected void onCreate (Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main);
-		mContext = this;
-		final ViewGroup codeLayout = findViewById(R.id.code_layout);
-		CodeLayout.loadWithDelay(codeLayout, 500);
-	}
+    static Activity mContext;
 
-	static class CodeLayout
+    @Override
+    protected void onCreate (Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.main);
+        mContext = this;
+        final ViewGroup codeLayout = findViewById(R.id.code_layout);
+        CodeLayout.loadWithDelay(codeLayout, 500);
+    }
+
+    static class CodeLayout
     {
-		static String[] content;
-		static final float textSizeFactor = 0.61f;
-		static float textSize;
-		static TextView textviewAbove;
-		static EditText editText;
-		static TextView textviewBelow;
-		static int parentWidth;
-		static int linesHeight;
-        
+        static String[] content;
+        static final float textSizeFactor = 0.61f;
+        static float textSize;
+        static TextView textviewAbove;
+        static EditText editText;
+        static TextView textviewBelow;
+        static int parentWidth;
+        static int linesHeight;
+
         static final int MAX_LINES = 35;
         static float startLine = 0;
         static int editTextPosition = 0;
@@ -49,30 +49,30 @@ public class MainActivity extends Activity
             new Handler().postDelayed(delayedRunnable, millis);
         }
 
-		static void init (ViewGroup codeLayout) {
-			content = generateContent().split("\n");
+        static void init (ViewGroup codeLayout) {
+            content = generateContent().split("\n");
 
-			parentWidth = codeLayout.getWidth();
-			linesHeight = codeLayout.getHeight() / MAX_LINES;
-			textSize = linesHeight * textSizeFactor;
+            parentWidth = codeLayout.getWidth();
+            linesHeight = codeLayout.getHeight() / MAX_LINES;
+            textSize = linesHeight * textSizeFactor;
 
-			textviewAbove = new TextView(mContext);
-			editText = new EditText(mContext);
-			textviewBelow = new TextView(mContext);
+            textviewAbove = new TextView(mContext);
+            editText = new EditText(mContext);
+            textviewBelow = new TextView(mContext);
 
-			textviewAbove.setTextSize(textSize);
-			editText.setBackgroundColor(0x7061AFEF);
-			editText.setPadding(0, 0, 0, 0);
-			editText.setTextSize(textSize);
-			textviewBelow.setTextSize(textSize);
-            
+            textviewAbove.setTextSize(textSize);
+            editText.setBackgroundColor(0x7061AFEF);
+            editText.setPadding(0, 0, 0, 0);
+            editText.setTextSize(textSize);
+            textviewBelow.setTextSize(textSize);
+
             positionEditText(15);
 
-			codeLayout.addView(textviewAbove);
-			codeLayout.addView(editText);
-			codeLayout.addView(textviewBelow);
+            codeLayout.addView(textviewAbove);
+            codeLayout.addView(editText);
+            codeLayout.addView(textviewBelow);
             codeLayout.setOnTouchListener(touchLogic());
-		}
+        }
 
         static View.OnTouchListener touchLogic () {
             return new View.OnTouchListener(){
@@ -151,32 +151,33 @@ public class MainActivity extends Activity
         }
 
 
-		public static void positionEditText (int position) {
-			textviewAbove.setLayoutParams(new LinearLayout.LayoutParams(parentWidth, linesHeight * (position)));
-			editText.setLayoutParams(new LinearLayout.LayoutParams(parentWidth, linesHeight));
-			textviewBelow.setLayoutParams(new LinearLayout.LayoutParams(parentWidth, linesHeight * (MAX_LINES - position)));
+        public static void positionEditText (int position) {
+            textviewAbove.setLayoutParams(new LinearLayout.LayoutParams(parentWidth, linesHeight * (position)));
+            editText.setLayoutParams(new LinearLayout.LayoutParams(parentWidth, linesHeight));
+            textviewBelow.setLayoutParams(new LinearLayout.LayoutParams(parentWidth, linesHeight * (MAX_LINES - position)));
 
-			setTexts(position);
-			textviewAbove.invalidate();
-			editText.invalidate();
-			textviewBelow.invalidate();
+            setTexts(position);
+            textviewAbove.invalidate();
+            editText.invalidate();
+            textviewBelow.invalidate();
             editTextPosition = position;
-		}
+        }
 
-		static String generateContent () {
+        static String generateContent () {
             String s = "";
             for (int i = 0; i <= 100; i++) {
                 s += mContext.getResources().getString(R.string.crazy);
                 s += mContext.getResources().getString(R.string.gyattstacy);
                 s += mContext.getResources().getString(R.string.last_rizzmas);
-			}
+            }
             if (true) return s;
 
-			StringBuilder sb = new StringBuilder();
-			for (int i = 0; i <= 60; i++) {
-				sb.append(i).append("\n");
-			}
-			return sb.toString();
-		}
-	}
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i <= 60; i++) {
+                sb.append(i).append("\n");
+            }
+            return sb.toString();
+        }
+    }
 }
+

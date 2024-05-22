@@ -1,5 +1,5 @@
 # Stats
-**compiled to apk:** 58 times!
+**compiled to apk:**  times!
 
 # Devlog:D
 |   Day |                                                                       link                                                                        |
