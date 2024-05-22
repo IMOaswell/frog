@@ -35,9 +35,7 @@ public class MainActivity extends Activity
         static int linesHeight;
 
         static final int MAX_LINES = 35;
-        static float startLine = 0;
-        static int editTextPosition = 0;
-
+        static int startLine = 0;
 
         static void loadWithDelay (final ViewGroup codeLayout, int millis) {
             Runnable delayedRunnable = new Runnable() {
@@ -111,8 +109,8 @@ public class MainActivity extends Activity
                             startLine--;
                             previousY += SCROLL_STRENGTH;
                         }
-                        mContext.setTitle("init: " + (int)initialY + "\tcurrent: " + (int)currentY + "\tprev: " + (int)previousY);
-                        positionEditText(editTextPosition);
+                        mContext.setTitle("startLine: " + startLine);
+                        positionEditText(15);
                     }
                     if (MotionEvent.ACTION_UP == action) {
                         if (canSwipe) return true;
@@ -126,41 +124,32 @@ public class MainActivity extends Activity
                     boolean lastSection = touchedSection == MAX_LINES;
                     if (lastSection) return;
                     mContext.setTitle(touchedSection + "");
-                    positionEditText(touchedSection);
                 }
             };
         }
 
-        static void setTexts (int editTextPosition) {
-            int startLineInt = (int) startLine;
-            int editTextLine = startLineInt + editTextPosition;
-            StringBuilder stringAbove = new StringBuilder();
-            StringBuilder stringBelow = new StringBuilder();
-            String stringEditText = "";
-
+        static void setTexts (int editTextLine) {
+            String allStringsInRange = "";
             for (int i = 0; i < MAX_LINES; i++) {
-                int currentLine = startLineInt + i;
+                int currentLine = startLine + i;
                 String currentString = content[currentLine];
-                if (currentLine < editTextLine) stringAbove.append(currentString + "\n");
-                if (currentLine == editTextLine) stringEditText = currentString;
-                if (currentLine > editTextLine) stringBelow.append(currentString + "\n");
+                allStringsInRange += currentString + "\n";
             }
-            textviewAbove.setText(stringAbove.toString());
-            textviewBelow.setText(stringBelow.toString());
-            editText.setText(stringEditText);
+            textviewAbove.setText("");
+            editText.setText("");
+            textviewBelow.setText(allStringsInRange);
         }
 
 
-        public static void positionEditText (int position) {
-            textviewAbove.setLayoutParams(new LinearLayout.LayoutParams(parentWidth, linesHeight * (position)));
-            editText.setLayoutParams(new LinearLayout.LayoutParams(parentWidth, linesHeight));
-            textviewBelow.setLayoutParams(new LinearLayout.LayoutParams(parentWidth, linesHeight * (MAX_LINES - position)));
+        public static void positionEditText (int line) {
+            textviewAbove.setLayoutParams(new LinearLayout.LayoutParams(parentWidth, 0));
+            editText.setLayoutParams(new LinearLayout.LayoutParams(parentWidth, 0));
+            textviewBelow.setLayoutParams(new LinearLayout.LayoutParams(parentWidth, linesHeight * MAX_LINES));
 
-            setTexts(position);
+            setTexts(line);
             textviewAbove.invalidate();
             editText.invalidate();
             textviewBelow.invalidate();
-            editTextPosition = position;
         }
 
         static String generateContent () {
@@ -180,4 +169,3 @@ public class MainActivity extends Activity
         }
     }
 }
-
