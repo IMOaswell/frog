@@ -25,10 +25,10 @@ public class MainActivity extends Activity
 
     static class CodeLayout
     {
-        static String[] content;
+        static String[] contentStrings;
         static final float textSizeFactor = 0.61f;
         static float textSize;
-        static TextView textviewBelow;
+        static TextView textview;
         static int parentWidth;
         static int linesHeight;
 
@@ -46,18 +46,18 @@ public class MainActivity extends Activity
         }
 
         static void init (ViewGroup codeLayout) {
-            content = generateContent().split("\n");
+            contentStrings = generateContent().split("\n");
 
             parentWidth = codeLayout.getWidth();
             linesHeight = codeLayout.getHeight() / MAX_LINES;
             textSize = linesHeight * textSizeFactor;
 
-            textviewBelow = new TextView(mContext);
-            textviewBelow.setTextSize(textSize);
+            textview = new TextView(mContext);
+            textview.setTextSize(textSize);
 
             refreshTexts();
 
-            codeLayout.addView(textviewBelow);
+            codeLayout.addView(textview);
             codeLayout.setOnTouchListener(touchLogic());
         }
 
@@ -89,7 +89,7 @@ public class MainActivity extends Activity
                         boolean swipeDown = currentY > previousY;
                         previousY = currentY;
                         if (swipeUp) {
-                            if ((startLine + MAX_LINES) >= content.length) return true;
+                            if ((startLine + MAX_LINES) >= contentStrings.length) return true;
                             startLine++;
                             previousY -= SCROLL_STRENGTH;
                         }
@@ -121,15 +121,15 @@ public class MainActivity extends Activity
             String allStringsInRange = "";
             for (int i = 0; i < MAX_LINES; i++) {
                 int currentLine = startLine + i;
-                String currentString = content[currentLine];
+                String currentString = contentStrings[currentLine];
                 allStringsInRange += currentString + "\n";
             }
-            textviewBelow.setText(allStringsInRange);
+            textview.setText(allStringsInRange);
         }
 
         static void resizeTexts () {
-            textviewBelow.setLayoutParams(new LinearLayout.LayoutParams(parentWidth, linesHeight * MAX_LINES));
-            textviewBelow.invalidate();
+            textview.setLayoutParams(new LinearLayout.LayoutParams(parentWidth, linesHeight * MAX_LINES));
+            textview.invalidate();
         }
         
         static void refreshTexts(){
