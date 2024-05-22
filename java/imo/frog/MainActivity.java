@@ -64,7 +64,7 @@ public class MainActivity extends Activity
             editText.setTextSize(textSize);
             textviewBelow.setTextSize(textSize);
 
-            positionEditText(15);
+            refreshTexts();
 
             codeLayout.addView(textviewAbove);
             codeLayout.addView(editText);
@@ -110,7 +110,7 @@ public class MainActivity extends Activity
                             previousY += SCROLL_STRENGTH;
                         }
                         mContext.setTitle("startLine: " + startLine);
-                        positionEditText(15);
+                        refreshTexts();
                     }
                     if (MotionEvent.ACTION_UP == action) {
                         if (canSwipe) return true;
@@ -128,7 +128,7 @@ public class MainActivity extends Activity
             };
         }
 
-        static void setTexts (int editTextLine) {
+        static void setTexts () {
             String allStringsInRange = "";
             for (int i = 0; i < MAX_LINES; i++) {
                 int currentLine = startLine + i;
@@ -140,16 +140,18 @@ public class MainActivity extends Activity
             textviewBelow.setText(allStringsInRange);
         }
 
-
-        public static void positionEditText (int line) {
+        static void resizeTexts () {
             textviewAbove.setLayoutParams(new LinearLayout.LayoutParams(parentWidth, 0));
             editText.setLayoutParams(new LinearLayout.LayoutParams(parentWidth, 0));
             textviewBelow.setLayoutParams(new LinearLayout.LayoutParams(parentWidth, linesHeight * MAX_LINES));
-
-            setTexts(line);
             textviewAbove.invalidate();
             editText.invalidate();
             textviewBelow.invalidate();
+        }
+        
+        static void refreshTexts(){
+            resizeTexts();
+            setTexts();
         }
 
         static String generateContent () {
