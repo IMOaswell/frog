@@ -13,8 +13,7 @@ import android.widget.TextView;
 public class MainActivity extends Activity
 {
 	static Activity mContext;
-	static final int MAX_LINES = 35;
-
+	
 	@Override
 	protected void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -34,10 +33,10 @@ public class MainActivity extends Activity
 		static TextView textviewBelow;
 		static int parentWidth;
 		static int linesHeight;
-
+        
+        static final int MAX_LINES = 35;
         static float startLine = 0;
-        static float endLine = MAX_LINES - 1;
-        static int currentEditTextLine = 0;
+        static int editTextPosition = 0;
 
 
         static void loadWithDelay (final ViewGroup codeLayout, int millis) {
@@ -103,19 +102,17 @@ public class MainActivity extends Activity
                         boolean swipeDown = currentY > previousY;
                         previousY = currentY;
                         if (swipeUp) {
-                            if (endLine >= content.length - 1) return true;
+                            if ((startLine + MAX_LINES) >= content.length) return true;
                             startLine++;
-                            endLine++;
                             previousY -= SCROLL_STRENGTH;
                         }
                         if (swipeDown) {
                             if (startLine <= 0) return true;
                             startLine--;
-                            endLine--;
                             previousY += SCROLL_STRENGTH;
                         }
                         mContext.setTitle("init: " + (int)initialY + "\tcurrent: " + (int)currentY + "\tprev: " + (int)previousY);
-                        positionEditText(currentEditTextLine);
+                        positionEditText(editTextPosition);
                     }
                     if (MotionEvent.ACTION_UP == action) {
                         if (canSwipe) return true;
@@ -163,7 +160,7 @@ public class MainActivity extends Activity
 			textviewAbove.invalidate();
 			editText.invalidate();
 			textviewBelow.invalidate();
-            currentEditTextLine = position;
+            editTextPosition = position;
 		}
 
 		static String generateContent () {
