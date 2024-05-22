@@ -28,8 +28,6 @@ public class MainActivity extends Activity
         static String[] content;
         static final float textSizeFactor = 0.61f;
         static float textSize;
-        static TextView textviewAbove;
-        static EditText editText;
         static TextView textviewBelow;
         static int parentWidth;
         static int linesHeight;
@@ -54,20 +52,11 @@ public class MainActivity extends Activity
             linesHeight = codeLayout.getHeight() / MAX_LINES;
             textSize = linesHeight * textSizeFactor;
 
-            textviewAbove = new TextView(mContext);
-            editText = new EditText(mContext);
             textviewBelow = new TextView(mContext);
-
-            textviewAbove.setTextSize(textSize);
-            editText.setBackgroundColor(0x7061AFEF);
-            editText.setPadding(0, 0, 0, 0);
-            editText.setTextSize(textSize);
             textviewBelow.setTextSize(textSize);
 
             refreshTexts();
 
-            codeLayout.addView(textviewAbove);
-            codeLayout.addView(editText);
             codeLayout.addView(textviewBelow);
             codeLayout.setOnTouchListener(touchLogic());
         }
@@ -135,17 +124,11 @@ public class MainActivity extends Activity
                 String currentString = content[currentLine];
                 allStringsInRange += currentString + "\n";
             }
-            textviewAbove.setText("");
-            editText.setText("");
             textviewBelow.setText(allStringsInRange);
         }
 
         static void resizeTexts () {
-            textviewAbove.setLayoutParams(new LinearLayout.LayoutParams(parentWidth, 0));
-            editText.setLayoutParams(new LinearLayout.LayoutParams(parentWidth, 0));
             textviewBelow.setLayoutParams(new LinearLayout.LayoutParams(parentWidth, linesHeight * MAX_LINES));
-            textviewAbove.invalidate();
-            editText.invalidate();
             textviewBelow.invalidate();
         }
         
