@@ -48,6 +48,42 @@ public class CodeLayout
         codeLayout.setOnTouchListener(touchLogic());
     }
 
+    static void setTexts () {
+        String allStringsInRange = "";
+        for (int i = 0; i < MAX_LINES; i++) {
+            int currentLine = startLine + i;
+            String currentString = contentStrings[currentLine];
+            allStringsInRange += currentString + "\n";
+        }
+        textview.setText(allStringsInRange);
+    }
+
+    static void resizeTexts () {
+        textview.setLayoutParams(new LinearLayout.LayoutParams(parentWidth, linesHeight * MAX_LINES));
+        textview.invalidate();
+    }
+
+    static void refreshTexts () {
+        resizeTexts();
+        setTexts();
+    }
+
+    static String generateContent () {
+        String s = "";
+        for (int i = 0; i <= 100; i++) {
+            s += mContext.getResources().getString(R.string.crazy);
+            s += mContext.getResources().getString(R.string.gyattstacy);
+            s += mContext.getResources().getString(R.string.last_rizzmas);
+        }
+        if (true) return s;
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i <= 60; i++) {
+            sb.append(i).append("\n");
+        }
+        return sb.toString();
+    }
+    
     static View.OnTouchListener touchLogic () {
         return new View.OnTouchListener(){
             float initialY = 0;
@@ -103,41 +139,4 @@ public class CodeLayout
             }
         };
     }
-
-    static void setTexts () {
-        String allStringsInRange = "";
-        for (int i = 0; i < MAX_LINES; i++) {
-            int currentLine = startLine + i;
-            String currentString = contentStrings[currentLine];
-            allStringsInRange += currentString + "\n";
-        }
-        textview.setText(allStringsInRange);
-    }
-
-    static void resizeTexts () {
-        textview.setLayoutParams(new LinearLayout.LayoutParams(parentWidth, linesHeight * MAX_LINES));
-        textview.invalidate();
-    }
-
-    static void refreshTexts () {
-        resizeTexts();
-        setTexts();
-    }
-
-    static String generateContent () {
-        String s = "";
-        for (int i = 0; i <= 100; i++) {
-            s += mContext.getResources().getString(R.string.crazy);
-            s += mContext.getResources().getString(R.string.gyattstacy);
-            s += mContext.getResources().getString(R.string.last_rizzmas);
-        }
-        if (true) return s;
-
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i <= 60; i++) {
-            sb.append(i).append("\n");
-        }
-        return sb.toString();
-    }
-
 }
