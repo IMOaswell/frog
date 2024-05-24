@@ -83,7 +83,7 @@ public class CodeLayout
         }
         return sb.toString();
     }
-    
+
     static View.OnTouchListener ScrollAndClickLogic () {
         return new View.OnTouchListener(){
             float initialY = 0;
@@ -109,7 +109,7 @@ public class CodeLayout
                 if (MotionEvent.ACTION_MOVE == action) {
                     if (!canSwipe) return true;
                     onScroll(currentY);
-                    
+
                 }
                 if (MotionEvent.ACTION_UP == action) {
                     if (canSwipe) return true;
@@ -117,8 +117,8 @@ public class CodeLayout
                 }
                 return true;
             }
-            
-            void onScroll(float currentY){
+
+            void onScroll (float currentY) {
                 boolean swipeUp = currentY < previousY;
                 boolean swipeDown = currentY > previousY;
                 previousY = currentY;
