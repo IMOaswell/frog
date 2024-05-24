@@ -45,7 +45,7 @@ public class CodeLayout
         refreshTexts();
 
         codeLayout.addView(textview);
-        codeLayout.setOnTouchListener(touchLogic());
+        codeLayout.setOnTouchListener(ScrollAndClickLogic());
     }
 
     static void setTexts () {
@@ -84,7 +84,7 @@ public class CodeLayout
         return sb.toString();
     }
     
-    static View.OnTouchListener touchLogic () {
+    static View.OnTouchListener ScrollAndClickLogic () {
         return new View.OnTouchListener(){
             float initialY = 0;
             float previousY = initialY;
@@ -108,27 +108,32 @@ public class CodeLayout
 
                 if (MotionEvent.ACTION_MOVE == action) {
                     if (!canSwipe) return true;
-                    boolean swipeUp = currentY < previousY;
-                    boolean swipeDown = currentY > previousY;
-                    previousY = currentY;
-                    if (swipeUp) {
-                        if ((startLine + MAX_LINES) >= contentStrings.length) return true;
-                        startLine++;
-                        previousY -= SCROLL_STRENGTH;
-                    }
-                    if (swipeDown) {
-                        if (startLine <= 0) return true;
-                        startLine--;
-                        previousY += SCROLL_STRENGTH;
-                    }
-                    mContext.setTitle("startLine: " + startLine);
-                    refreshTexts();
+                    onScroll(currentY);
+                    
                 }
                 if (MotionEvent.ACTION_UP == action) {
                     if (canSwipe) return true;
                     onClick(currentY);
                 }
                 return true;
+            }
+            
+            void onScroll(float currentY){
+                boolean swipeUp = currentY < previousY;
+                boolean swipeDown = currentY > previousY;
+                previousY = currentY;
+                if (swipeUp) {
+                    if ((startLine + MAX_LINES) >= contentStrings.length) return;
+                    startLine++;
+                    previousY -= SCROLL_STRENGTH;
+                }
+                if (swipeDown) {
+                    if (startLine <= 0) return;
+                    startLine--;
+                    previousY += SCROLL_STRENGTH;
+                }
+                mContext.setTitle("startLine: " + startLine);
+                refreshTexts();
             }
 
             void onClick (float y) {
